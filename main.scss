@@ -1,0 +1,72 @@
+@import 'variables', 'functions', 'keyframes';
+
+* {
+    margin: 0;
+    padding:0;
+    width: 100%;
+    font-family: consolas;
+}
+
+body {
+    background-color: $primary-color;
+    color: $text-color;
+}
+
+.container {
+    background-color: $primary-color-dark;
+    width:80%;
+    margin: 50px auto;
+    border: 1px solid $accent-color;
+    opacity: 0;
+    animation: fadein 2s 7s 1 linear forwards;
+}
+
+.header {
+    width: 100%;
+    height: 100px;
+    background-color: $primary-color-dark;
+    border-bottom: 1px solid $accent-color;
+    display: flex;
+
+    &__plane {
+        height: 100%;
+        width: 80%;
+        animation: shake 1s 6 linear;
+        &__image {
+            height: 100%;
+            width: 140px;
+            animation: moveplane 5s 1 ease-out  forwards;
+            img {
+                animation: spinplane 1s 4s 1 linear;
+            }
+        }
+    }
+
+    &__logo {
+        height: 100%;
+        width: 20%;
+        font-size: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        animation: fadein 2s 6s 1 linear forwards;
+    }
+}
+
+.search {
+    height: 400px;
+    margin: 80px auto;
+    width: 80%;
+    background-color: black;
+    
+
+}
+
+.results {
+    min-height: 100px;
+    height: auto;
+    width: 90%;
+    margin: 80px auto;
+    background-color: black;
+}
