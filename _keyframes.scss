@@ -1,7 +1,7 @@
 
 @keyframes moveplane {
     from { margin-left: -200px; }
-    to { margin-left:98%; }
+    to { margin-left:95%; }
 }
 
 @keyframes spinplane {
@@ -27,4 +27,15 @@
 @keyframes fadein {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+
+@keyframes buttonhover {
+    from {
+        background-color: $primary-color;
+        transform: scale3d(1, 1, 1);
+    }
+    to {
+        background-color: $accent-color;
+        transform: scale3d(1.05, 1.1, 1);
+    }
 }
