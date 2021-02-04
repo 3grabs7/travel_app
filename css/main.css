@@ -241,27 +241,68 @@ body {
   height: 50%;
   width: 60%;
   margin: 0 auto;
+  margin-top: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 .search__term input {
   width: 100%;
-  margin-top: 20px;
   height: 50%;
   border-radius: 5px;
+  font-size: 100%;
 }
 .search__term input::-webkit-input-placeholder {
-  text-align: center;
+  color: #9775fc;
+  padding-left: 5px;
 }
 .search__term input::-moz-placeholder {
-  text-align: center;
+  color: #9775fc;
+  padding-left: 5px;
 }
 .search__term input:-ms-input-placeholder {
-  text-align: center;
+  color: #9775fc;
+  padding-left: 5px;
 }
 .search__term input::-ms-input-placeholder {
-  text-align: center;
+  color: #9775fc;
+  padding-left: 5px;
 }
 .search__term input::placeholder {
+  color: #9775fc;
+  padding-left: 5px;
+}
+.search__term i {
+  padding-top: 4px;
+  padding-left: 10px;
+  font-size: 26px;
+  width: 5%;
+  position: relative;
+  display: block;
+}
+.search__term i:hover {
+  -webkit-transform: scale3d(1.1, 1.1, 1.1);
+          transform: scale3d(1.1, 1.1, 1.1);
+  color: #9775fc;
+  cursor: pointer;
+}
+.search__term i:before {
+  content: attr(data-text);
+  position: absolute;
+  top: 30%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  margin-left: 40px;
+  width: 200px;
+  padding: 10px;
+  border-radius: 10px;
+  background: #5c91f3;
+  color: #fff;
   text-align: center;
+  display: none;
+}
+.search__term i:hover:before {
+  display: block;
 }
 .search__checkbox {
   width: 50%;
@@ -270,6 +311,9 @@ body {
   display: -ms-flexbox;
   display: flex;
   margin: 20px auto;
+}
+.search__checkbox input:hover {
+  cursor: pointer;
 }
 .search__button {
   height: 35%;
@@ -283,13 +327,14 @@ body {
 .search__button button {
   height: 90%;
   border-radius: 5px;
-  margin-top: 7px;
+  margin-top: 9px;
   background-color: #5c91f3;
   border: none;
 }
 .search__button button:hover {
   -webkit-animation: buttonhover 0.2s ease-out forwards;
           animation: buttonhover 0.2s ease-out forwards;
+  cursor: pointer;
 }
 .search__button__text {
   position: absolute;
@@ -304,5 +349,91 @@ body {
   height: auto;
   width: 90%;
   margin: 80px auto;
-  background-color: black;
+  background-color: #1e3869;
+}
+.results__weather {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+.results__weather__top {
+  width: 15%;
+  height: 40%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+.results__weather__top h1 {
+  text-align: left;
+}
+.results__weather__top img {
+  height: 90%;
+  width: 90%;
+}
+.results__weather__details {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  width: 40%;
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  padding-bottom: 30px;
+}
+.results__weather__details__item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+.results__weather__details__item i {
+  font-size: 36px;
+  text-align: center;
+}
+.results__weather__details__item p {
+  margin-top: 10px;
+  text-align: center;
+}
+.results__attractions {
+  width: 100%;
+}
+.results__attractions__head {
+  width: 100%;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+.results__attractions__boxes {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  background-color: #1e3869;
+}
+.results__attractions__boxes__box {
+  width: 30%;
+  height: 270px;
+  background-color: #5c91f3;
+}
+.results hr {
+  width: 80%;
+  margin: 10px auto;
 }/*# sourceMappingURL=main.css.map */

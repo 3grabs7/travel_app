@@ -37,7 +37,7 @@ body {
             width: 140px;
             //animation: moveplane 5s 1 ease-out  forwards;
             img {
-                //animation: spinplane 1s 4s 1 linear;
+                //animation: spinplane 1s 3s 1 linear;
             }
         }
     }
@@ -65,13 +65,50 @@ body {
         height: 50%;
         width: 60%;
         margin: 0 auto;
+        margin-top: 20px;
+        display: flex;
+
         input {
             width: 100%;
-            margin-top: 20px;
             height:50%;
             border-radius: 5px;
+            font-size: 100%;
 
-            &::placeholder { text-align: center; }
+            &::placeholder { 
+                color: $accent-color;
+                padding-left: 5px; 
+            }
+        }
+        i {
+            padding-top: 4px;
+            padding-left: 10px;
+            font-size: 26px;
+            width: 5%;
+            position: relative;
+            display: block;
+            &:hover {
+                transform: scale3d(1.1,1.1,1.1);
+                color: $accent-color;
+                cursor: pointer;
+            }
+            &:before {
+                content: attr(data-text); 
+                position:absolute; 
+                top:30%;
+                transform:translateY(-50%);
+                margin-left:40px;
+                width:200px;
+                padding:10px;
+                border-radius:10px;
+                background:$primary-color;
+                color: #fff;
+                text-align:center;
+                display: none;
+                
+            }
+            &:hover:before{
+                display: block;
+            }
         }
     }
 
@@ -80,6 +117,7 @@ body {
         height: 20%;
         display: flex;
         margin: 20px auto;
+        input:hover{ cursor: pointer; }
     }
     &__button {
         height: 35%;
@@ -91,10 +129,13 @@ body {
         button {
             height: 90%;
             border-radius: 5px;
-            margin-top: 7px;
+            margin-top: 9px;
             background-color: $primary-color;
             border: none;
-            &:hover { animation: buttonhover 0.2s ease-out forwards; }
+            &:hover { 
+                animation: buttonhover 0.2s ease-out forwards; 
+                cursor: pointer;
+            }
         }
         &__text {
             position: absolute;
@@ -111,5 +152,68 @@ body {
     height: auto;
     width: 90%;
     margin: 80px auto;
-    background-color: black;
+    background-color: $primary-color-dark;
+
+    &__weather {
+        display: flex;
+        width: 100%;
+
+        &__top {
+            width: 15%;
+            height: 40%;
+            display:flex;
+            flex-direction: column;
+            h1 { text-align: left; }
+            img {
+                height: 90%;
+                width: 90%;
+            }
+        }
+        &__details {
+            position: relative;
+            display: flex;
+            height: 100%;
+            width: 40%;
+            align-self: flex-end;
+            justify-content: flex-start;
+            padding-bottom: 30px;
+            &__item {
+                display: flex;
+                flex-direction: column;
+                i { 
+                    font-size: 36px;
+                    text-align: center;
+                }
+                p {
+                    margin-top: 10px;
+                    text-align: center;
+                 }
+            }
+        }
+    }
+
+    &__attractions {
+        width: 100%;
+
+        &__head {
+            width: 100%;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+        &__boxes {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            background-color: $primary-color-dark;
+
+            &__box {
+                width: 30%;
+                height: 270px;
+                background-color: $primary-color;
+            }
+        }
+    }
+
+    hr { width: 80%; margin: 10px auto;}
 }

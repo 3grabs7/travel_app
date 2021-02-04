@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
     <title>Document</title>
 </head>
 <body>
@@ -21,6 +22,8 @@
         <div class="search">
             <div class="search__term">
                 <input type="text" placeholder="Enter your destination" id="searchterm">
+                <i data-text="Click to find your location" class="fas fa-map-marker-alt">O.O</i>
+                
             </div>
             <div class="search__checkbox">
                 <input type="checkbox" name="weather">
@@ -40,7 +43,60 @@
     </div>
     <div class="container">
         <div class="results">
-            <p>Your search results goes here</p>
+            <div class="results__weather">
+                <div class="results__weather__top">
+                    <h1>Weather</h1>
+                    <img src="./img/cloud.png" alt="fint moln">
+                </div>
+                <div class="results__weather__details">
+                    <div class="results__weather__details__item">
+                        <i class="fas fa-thermometer-half"></i>
+                        <p>-54c</p>
+                    </div>
+                    <div class="results__weather__details__item">
+                        <i class="fa fa-snowflake" aria-hidden="true"></i>
+                        <p>Lite</p>
+                    </div>
+                    <div class="results__weather__details__item"> 
+                        <i class="fas fa-umbrella"></i>
+                        <p>Massa</p>
+                    </div>
+                    <div class="results__weather__details__item"> 
+                        <i class="fa fa-bullhorn" aria-hidden="true"></i>
+                        <p>Jo</p>
+                    </div>
+                    <div class="results__weather__details__item"> 
+                        <i class="fab fa-bluetooth"></i>
+                        <p>No</p>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="results__attractions">
+                <div class="results__attractions__head">
+                    <h1>Attractions</h1>
+                </div>
+                <div class="results__attractions__boxes">
+                    <div class="results__attractions__boxes__box">
+                        <img src="" alt="bra ställe">
+                        <h1>Jupp</h1>
+                        <p>hehehehehe</p>
+                        <a href="#">kollarå</a>
+                    </div>
+                    <div class="results__attractions__boxes__box">
+                        <img src="" alt="bra ställe">
+                        <h1>Jupp</h1>
+                        <p>hehehehehe</p>
+                        <a href="#">kollarå</a>
+                    </div>
+                    <div class="results__attractions__boxes__box">
+                        <img src="" alt="bra ställe">
+                        <h1>Jupp</h1>
+                        <p>hehehehehe</p>
+                        <a href="#">kollarå</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
