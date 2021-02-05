@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/main.css">
-    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <title>Document</title>
 </head>
 <body>
@@ -15,15 +15,14 @@
             </div>
         </div>
         <div class="header__logo">
-            xD&TrAv£L
+            xDTr@v£L
         </div>
     </header>
     <div class="container">
         <div class="search">
             <div class="search__term">
                 <input type="text" placeholder="Enter your destination" id="searchterm">
-                <i data-text="Click to find your location" class="fas fa-map-marker-alt">O.O</i>
-                
+                <i class="fas fa-map-marker-alt"></i>
             </div>
             <div class="search__checkbox">
                 <input type="checkbox" name="weather">
@@ -45,29 +44,32 @@
         <div class="results">
             <div class="results__weather">
                 <div class="results__weather__top">
-                    <h1>Weather</h1>
-                    <img src="./img/cloud.png" alt="fint moln">
+                    <h1>Weather <br> -</h1>
                 </div>
                 <div class="results__weather__details">
                     <div class="results__weather__details__item">
-                        <i class="fas fa-thermometer-half"></i>
-                        <p>-54c</p>
+                        <img src="http://openweathermap.org/img/wn/01d@2x.png" alt="fint moln" id="weatherimg">
+                        <p>-</p>
                     </div>
                     <div class="results__weather__details__item">
-                        <i class="fa fa-snowflake" aria-hidden="true"></i>
-                        <p>Lite</p>
+                        <i class="fas fa-thermometer-half"></i>
+                        <p>-</p>
+                    </div>
+                    <div class="results__weather__details__item">
+                        <i class="fas fa-wind"></i>
+                        <p>-</p>
                     </div>
                     <div class="results__weather__details__item"> 
-                        <i class="fas fa-umbrella"></i>
-                        <p>Massa</p>
+                        <i class="fas fa-cloud"></i>
+                        <p>-</p>
                     </div>
                     <div class="results__weather__details__item"> 
-                        <i class="fa fa-bullhorn" aria-hidden="true"></i>
-                        <p>Jo</p>
+                        <i class="fas fa-blind"></i>
+                        <p>-</p>
                     </div>
                     <div class="results__weather__details__item"> 
-                        <i class="fab fa-bluetooth"></i>
-                        <p>No</p>
+                        <i class="fas fa-humidity"></i>
+                        <p>-</p>
                     </div>
                 </div>
             </div>
