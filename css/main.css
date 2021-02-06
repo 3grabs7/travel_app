@@ -219,9 +219,6 @@ body {
   width: 80%;
   margin: 50px auto;
   border: 1px solid #d9ddff;
-  opacity: 0;
-  -webkit-animation: fadein 2s 7s 1 linear forwards;
-          animation: fadein 2s 7s 1 linear forwards;
 }
 
 .header {
@@ -236,18 +233,10 @@ body {
 .header__plane {
   height: 100%;
   width: 80%;
-  -webkit-animation: shake 1s 6 linear;
-          animation: shake 1s 6 linear;
 }
 .header__plane__image {
   height: 100%;
   width: 140px;
-  -webkit-animation: moveplane 5s 1 ease-out forwards;
-          animation: moveplane 5s 1 ease-out forwards;
-}
-.header__plane__image img {
-  -webkit-animation: spinplane 1s 3s 1 linear;
-          animation: spinplane 1s 3s 1 linear;
 }
 .header__logo {
   height: 100%;
@@ -262,9 +251,6 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  opacity: 0;
-  -webkit-animation: fadein 2s 6s 1 linear forwards;
-          animation: fadein 2s 6s 1 linear forwards;
 }
 
 .search {
@@ -280,6 +266,7 @@ body {
           flex-direction: column;
 }
 .search__term {
+  position: relative;
   height: 50%;
   width: 60%;
   margin: 0 auto;
@@ -292,27 +279,50 @@ body {
   width: 100%;
   height: 50%;
   border-radius: 5px;
+  padding-left: 5px;
   font-size: 100%;
 }
-.search__term input::-webkit-input-placeholder {
-  color: #9775fc;
-  padding-left: 5px;
+.search__term input:focus {
+  outline: none;
 }
-.search__term input::-moz-placeholder {
-  color: #9775fc;
-  padding-left: 5px;
+.search__term input:focus + label span {
+  -webkit-transform: translateY(-150%);
+          transform: translateY(-150%);
+  color: white;
+  font-size: 18px;
 }
-.search__term input:-ms-input-placeholder {
-  color: #9775fc;
-  padding-left: 5px;
+.search__term input:focus + label::after {
+  -webkit-transform: translateX(0%);
+          transform: translateX(0%);
 }
-.search__term input::-ms-input-placeholder {
-  color: #9775fc;
-  padding-left: 5px;
+.search__term label {
+  width: 92.5%;
+  position: absolute;
+  bottom: 30px;
+  left: 5px;
+  pointer-events: none;
 }
-.search__term input::placeholder {
-  color: #9775fc;
-  padding-left: 5px;
+.search__term label span {
+  color: black;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+.search__term label::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  border: 2px solid #9775fc;
+  border-radius: 10px;
+  color: black;
+  left: -3px;
+  bottom: -8px;
+  -webkit-transform: translateX(-200%);
+          transform: translateX(-200%);
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
 .search__term i {
   top: -4px;

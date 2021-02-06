@@ -26,10 +26,14 @@ checkboxes.forEach(function(box) {
 
 document.getElementById('searchbutton').addEventListener('click', async () => {
     let input = document.getElementById('searchterm').value;
-    if(input === '') {
-        alert('Please enter a destination');
-    } else {
+    if(input === '') { alert('Please enter a destination'); } 
+    else {
         let returnObj = await apiCallName(input);
+
+
+        attraction(input);
+        //attraction({la: "0000000", lo: "0000000"});
+
         updateWeather(returnObj);
     }
     if(optionsValues[0][1] === true) {
@@ -46,6 +50,10 @@ document.getElementById('searchbutton').addEventListener('click', async () => {
     } 
 })
 
+document.getElementById('searchterm').addEventListener('keydown', (e) => {
+    if(e.keyCode === 13) { document.getElementById('searchbutton').click(); }
+})
+
 async function apiCallName(city) {
     city.replace(' ', '%20');
     let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apikey}`);
@@ -56,6 +64,19 @@ async function apiCallName(city) {
 async function apiCallLatLon(lat, lon) {
     let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apikey}`);
     let json = await response.json();
+    return json;
+}
+
+
+const clientId = '5O0MIVGTSWVDRA5LG0A3MZE4QPMUA3K5BAFCHMHQ3L2SRZ1B';
+const clientSecret = '2RLZPVABFLJ51G0LHVOIHAC3FB5DFIIEJDJOD5PND5F4RT5Z';
+const token = `client_id=${clientId}&client_secret=${clientSecret}`
+let attractionURL = 'https://api.foursquare.com/v2/venues/explore/';
+async function attraction(city) {
+    let query = typeof city === 'object' ? `&near=${city.la},${city.lo}&limit=10&sortByPopularity=1` : `&near=${city.replace(' ', '%20')}&limit=10&sortByPopularity=1`;
+    let response = await fetch(attractionURL + token + query);
+    let json = await response.json();
+    alert(JSON.stringify(json));
     return json;
 }
 

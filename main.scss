@@ -17,8 +17,8 @@ body {
     width:80%;
     margin: 50px auto;
     border: 1px solid $border-color;
-    opacity: 0;
-    animation: fadein 2s 7s 1 linear forwards;
+    //opacity: 0;
+    //animation: fadein 2s 7s 1 linear forwards;
 }
 
 .header {
@@ -31,17 +31,16 @@ body {
     &__plane {
         height: 100%;
         width: 80%;
-        animation: shake 1s 6 linear;
+        //animation: shake 1s 6 linear;
         &__image {
             height: 100%;
             width: 140px;
-            animation: moveplane 5s 1 ease-out  forwards;
+            //animation: moveplane 5s 1 ease-out  forwards;
             img {
-                animation: spinplane 1s 3s 1 linear;
+                //animation: spinplane 1s 3s 1 linear;
             }
         }
     }
-
     &__logo {
         height: 100%;
         width: 20%;
@@ -49,8 +48,8 @@ body {
         display: flex;
         justify-content: center;
         align-items: center;
-        opacity: 0;
-        animation: fadein 2s 6s 1 linear forwards;
+        //opacity: 0;
+        //animation: fadein 2s 6s 1 linear forwards;
     }
 }
 
@@ -62,6 +61,7 @@ body {
     flex-direction: column;
 
     &__term {
+        position: relative;
         height: 50%;
         width: 60%;
         margin: 0 auto;
@@ -72,12 +72,43 @@ body {
             width: 100%;
             height:50%;
             border-radius: 5px;
+            padding-left: 5px;
             font-size: 100%;
 
-            &::placeholder { 
-                color: $accent-color;
-                padding-left: 5px; 
+            &:focus { outline: none; }
+            &:focus + label span {
+                transform: translateY(-150%);
+                color: white;
+                font-size: 18px;
             }
+            &:focus + label::after { transform: translateX(0%); }
+        }
+        label {
+            width: 92.5%;
+            position: absolute;
+            bottom: 30px;
+            left: 5px;
+            pointer-events: none;
+
+            span{
+                color: black;
+                position: absolute;
+                bottom: 0px;
+                left: 0px;
+                transition: all 0.3s ease;
+            }
+            &::after {
+                content: "";
+                position: absolute;
+                width: 100%;
+                border: 2px solid $accent-color;
+                border-radius: 10px;
+                color: black;
+                left:-3px;
+                bottom: -8px;
+                transform: translateX(-200%);
+                transition: all 0.3s ease;
+            } 
         }
         i {
             top: -4px;
@@ -225,5 +256,5 @@ body {
         }
     }
 
-    hr { width: 80%; margin: 10px auto;}
+    hr { width: 80%; margin: 10px auto; }
 }
