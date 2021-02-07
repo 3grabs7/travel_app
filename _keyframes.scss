@@ -46,3 +46,28 @@
     100% { transform: scale3d(1,1,1); }
 
 }
+
+@keyframes ripple {
+    0% {
+        width: 80%;
+        opacity: 1;
+    }
+    50% {
+        width: .1%;
+        opacity: 0;
+    }
+    100% {
+        width: 80%;
+        opacity: 1;
+    }
+}
+
+@keyframes rotateLetters {
+    from{transform:rotateX(0deg)}
+    to{transform:rotateX(360deg)}
+}
+
+@keyframes rotateIcons {
+    from{transform: rotateY(0deg);}
+    to{transform: rotateY(360deg);}
+}

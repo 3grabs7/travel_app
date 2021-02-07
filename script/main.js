@@ -82,13 +82,12 @@ async function attraction(city) {
         : `near=${city.replace(' ', '%20')}&limit=10&sortByPopularity=1`;
     let response = await fetch(attractionURL + query + token);
     let json = await response.json();
-    alert(JSON.stringify(json));
+    //alert(JSON.stringify(json));
     return json;
 }
 
 function updateWeather(obj) {
     let weatherForm = document.querySelectorAll('.results__weather__details__item p');
-    document.querySelector('.results__weather__top h1').innerHTML = `Weather <br> - ${obj.name}`;
     let weather = [
         obj.weather[0].description,
         `${Math.round((obj.main.temp - 273.15) * 10) / 10} C`,
@@ -97,8 +96,13 @@ function updateWeather(obj) {
         `${obj.visibility / 10} m`,
         `${obj.main.humidity / 10} %`
     ];
-    document.getElementById('weatherimg').src = `http://openweathermap.org/img/wn/${obj.weather[0].icon.replace('n', 'd')}@2x.png`;
-    weatherForm.forEach((o,i) => { o.innerHTML = weather[i]; })
+    loadAnimation();
+    setTimeout(()=>{
+        document.querySelector('.results__weather__top h1').innerHTML = `Weather <br> - ${obj.name}`;
+
+        document.getElementById('weatherimg').src = `http://openweathermap.org/img/wn/${obj.weather[0].icon.replace('n', 'd')}@2x.png`;
+        weatherForm.forEach((o,i) => { o.innerHTML = weather[i]; })
+    }, 750)
 }
 
 
@@ -120,4 +124,21 @@ function loadAttractions(objArr) {
         box.appendChild([img, head, info, link]);
         div.appendChild(box);
     })
+}
+
+function loadAnimation() {
+    document.getElementsByTagName('hr')[0].style.animation = 'ripple 1s linear 1';
+    document.querySelector('.results__weather__top h1').style.animation = 'rotateLetters 1s linear 1';
+    let icons = document.querySelectorAll('.results__weather__details__item');
+    for(let i = 0; i < icons.length; i++) {
+        icons[i].style.animation = 'rotateIcons 1s linear 1';
+    }
+    setTimeout(() => {
+        document.getElementsByTagName('hr')[0].style.animation = '';
+        document.querySelector('.results__weather__top h1').style.animation = '';
+        for(let i = 0; i < icons.length; i++) {
+            icons[i].style.animation = '';
+        }
+    }, 1000)
+    
 }
