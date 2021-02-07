@@ -1,7 +1,10 @@
-
-let optionsValues = [['weather', false], ['attraction', false], ['sort', false]];
-let checkboxes = document.querySelectorAll('input[type=checkbox]');
 const apikey = "8b4c15d2d0638b590c32e373ba197bbb"
+
+document.getElementById('searchterm').addEventListener('change', (e) => {
+    if(e.currentTarget.value != '') {
+        document.querySelector('#placeholder').innerHTML = "";
+    } else { document.querySelector('#placeholder').innerHTML = 'Enter your destination' }
+})
 
 document.querySelector('.search__term i').addEventListener('click', () => {
     navigator.geolocation.getCurrentPosition(async (pos) => {
@@ -9,8 +12,11 @@ document.querySelector('.search__term i').addEventListener('click', () => {
         document.getElementById('searchterm').value = returnObj.name;
         document.getElementById('searchbutton').click();
     });
+    document.querySelector('#placeholder').innerHTML = ""
 })
 
+let checkboxes = document.querySelectorAll('input[type=checkbox]');
+let optionsValues = [['weather', false], ['attraction', false], ['sort', false]];
 checkboxes.forEach(function(box) {
     box.addEventListener('change', function(e) {
         let weather = document.querySelector('input[name=weather]');
@@ -60,7 +66,6 @@ async function apiCallName(city) {
     let json = await response.json();
     return json;
 }
-
 async function apiCallLatLon(lat, lon) {
     let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apikey}`);
     let json = await response.json();
@@ -69,12 +74,13 @@ async function apiCallLatLon(lat, lon) {
 
 
 const clientId = '5O0MIVGTSWVDRA5LG0A3MZE4QPMUA3K5BAFCHMHQ3L2SRZ1B';
-const clientSecret = '2RLZPVABFLJ51G0LHVOIHAC3FB5DFIIEJDJOD5PND5F4RT5Z';
-const token = `client_id=${clientId}&client_secret=${clientSecret}`
+const clientSecret = 'RUO5D0ZODJHNJPROXXMXCYBBY3BL4M3TRA4PFZDVKCXJEV1O';
+const token = `&client_id=${clientId}&client_secret=${clientSecret}`
 let attractionURL = 'https://api.foursquare.com/v2/venues/explore/';
 async function attraction(city) {
-    let query = typeof city === 'object' ? `&near=${city.la},${city.lo}&limit=10&sortByPopularity=1` : `&near=${city.replace(' ', '%20')}&limit=10&sortByPopularity=1`;
-    let response = await fetch(attractionURL + token + query);
+    let query = typeof city === 'object' ? `near=${city.la},${city.lo}&limit=10&sortByPopularity=1` 
+        : `near=${city.replace(' ', '%20')}&limit=10&sortByPopularity=1`;
+    let response = await fetch(attractionURL + query + token);
     let json = await response.json();
     alert(JSON.stringify(json));
     return json;
@@ -93,4 +99,25 @@ function updateWeather(obj) {
     ];
     document.getElementById('weatherimg').src = `http://openweathermap.org/img/wn/${obj.weather[0].icon.replace('n', 'd')}@2x.png`;
     weatherForm.forEach((o,i) => { o.innerHTML = weather[i]; })
+}
+
+
+function loadAttractions(objArr) {
+    let div = document.createElement('div');
+    div.className = 'results__attractions__boxes';
+    objArr.forEach((obj) => {
+        let box = document.createElement('div');
+        box.className = 'results__attractions__boxes__box';
+        let img = document.createElement('img');
+        img.src = obj.img;
+        let head = document.createElement('h1');
+        head.innerHTML = obj.name;
+        let info = document.createElement('p');
+        info.innerHTML = obj.desc;
+        let link = document.createElement('a');
+        link.innerHTML = 'Website goes here';
+        link.href = obj.web;
+        box.appendChild([img, head, info, link]);
+        div.appendChild(box);
+    })
 }
