@@ -1,4 +1,3 @@
-const apikey = "8b4c15d2d0638b590c32e373ba197bbb"
 
 document.getElementById('searchterm').addEventListener('change', (e) => {
     if(e.currentTarget.value != '') {
@@ -21,10 +20,11 @@ checkboxes.forEach(function(box) {
     box.addEventListener('change', function(e) {
         let weather = document.querySelector('input[name=weather]');
         let attraction = document.querySelector('input[name=attraction]');
+        let sort = document.querySelector('input[name=sort]');
         if(e.currentTarget.name !== 'sort') {
             if(optionsValues[0][1] === true) { weather.checked = false; } 
             else if(optionsValues[1][1] === true) { attraction.checked = false; }
-        }
+        } 
         optionsValues = [];
         checkboxes.forEach(b=> optionsValues.push([b.name ,b.checked]));
     }) 
@@ -35,11 +35,7 @@ document.getElementById('searchbutton').addEventListener('click', async () => {
     if(input === '') { alert('Please enter a destination'); } 
     else {
         let returnObj = await apiCallName(input);
-
-
         attraction(input);
-        //attraction({la: "0000000", lo: "0000000"});
-
         updateWeather(returnObj);
     }
     if(optionsValues[0][1] === true) {
@@ -54,12 +50,15 @@ document.getElementById('searchbutton').addEventListener('click', async () => {
         document.querySelector('.results__attractions').style.display = 'block';
         document.querySelector('.results__weather').style.display = 'flex';
     } 
+    if(optionsValues[2][1] === true) { sorted = true; }
+    else { sorted = false; }
 })
 
 document.getElementById('searchterm').addEventListener('keydown', (e) => {
     if(e.keyCode === 13) { document.getElementById('searchbutton').click(); }
 })
 
+const apikey = "8b4c15d2d0638b590c32e373ba197bbb"
 async function apiCallName(city) {
     city.replace(' ', '%20');
     let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apikey}`);
@@ -69,20 +68,6 @@ async function apiCallName(city) {
 async function apiCallLatLon(lat, lon) {
     let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apikey}`);
     let json = await response.json();
-    return json;
-}
-
-
-const clientId = '5O0MIVGTSWVDRA5LG0A3MZE4QPMUA3K5BAFCHMHQ3L2SRZ1B';
-const clientSecret = 'RUO5D0ZODJHNJPROXXMXCYBBY3BL4M3TRA4PFZDVKCXJEV1O';
-const token = `&client_id=${clientId}&client_secret=${clientSecret}`
-let attractionURL = 'https://api.foursquare.com/v2/venues/explore/';
-async function attraction(city) {
-    let query = typeof city === 'object' ? `near=${city.la},${city.lo}&limit=10&sortByPopularity=1` 
-        : `near=${city.replace(' ', '%20')}&limit=10&sortByPopularity=1`;
-    let response = await fetch(attractionURL + query + token);
-    let json = await response.json();
-    //alert(JSON.stringify(json));
     return json;
 }
 
@@ -98,32 +83,48 @@ function updateWeather(obj) {
     ];
     loadAnimation();
     setTimeout(()=>{
-        document.querySelector('.results__weather__top h1').innerHTML = `Weather <br> - ${obj.name}`;
+        document.querySelector('.results__weather__top h1').innerHTML = `Weather <br> <span style="font-size:60px">${obj.name}</span>`;
 
         document.getElementById('weatherimg').src = `http://openweathermap.org/img/wn/${obj.weather[0].icon.replace('n', 'd')}@2x.png`;
         weatherForm.forEach((o,i) => { o.innerHTML = weather[i]; })
     }, 750)
 }
 
+let date = new Date();
+let dd = String(date.getDate()).padStart(2, '0');
+let mm = String(date.getMonth() + 1).padStart(2, '0');
+let yyyy = date.getFullYear();
+let today = `${yyyy}${mm}${dd}`;
 
-function loadAttractions(objArr) {
-    let div = document.createElement('div');
-    div.className = 'results__attractions__boxes';
-    objArr.forEach((obj) => {
+const clientId = '5O0MIVGTSWVDRA5LG0A3MZE4QPMUA3K5BAFCHMHQ3L2SRZ1B';
+const clientSecret = 'RUO5D0ZODJHNJPROXXMXCYBBY3BL4M3TRA4PFZDVKCXJEV1O';
+const token = `&client_id=${clientId}&client_secret=${clientSecret}&v=${today}`
+let attractionURL = 'https://api.foursquare.com/v2/venues/search?';
+async function attraction(city) {
+    let query = `near=${city.replace(' ', '%20')}&limit=10&sortByPopularity=1`;
+    let response = await fetch(`${attractionURL}${query}${token}`);
+    let json = await response.json();
+    let venues = json.response.venues.map((v) => v.name);
+    loadAttractions(venues);
+    return json;
+}
+
+function loadAttractions(arr) {
+    // createDocumentFragment
+    let src = document.querySelector('.results__attractions__boxes');
+    Array.from(src.childNodes).forEach(e => e.remove());
+
+    let sort = document.querySelector('input[name=sort]');
+    if(sort.checked === true) { arr.sort(); }
+
+    for(let i = 0; i < arr.length; i++) {
         let box = document.createElement('div');
         box.className = 'results__attractions__boxes__box';
-        let img = document.createElement('img');
-        img.src = obj.img;
         let head = document.createElement('h1');
-        head.innerHTML = obj.name;
-        let info = document.createElement('p');
-        info.innerHTML = obj.desc;
-        let link = document.createElement('a');
-        link.innerHTML = 'Website goes here';
-        link.href = obj.web;
-        box.appendChild([img, head, info, link]);
-        div.appendChild(box);
-    })
+        head.innerHTML = arr[i];
+        box.appendChild(head);
+        src.appendChild(box);
+    }
 }
 
 function loadAnimation() {
