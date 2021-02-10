@@ -100,13 +100,23 @@ const clientId = '5O0MIVGTSWVDRA5LG0A3MZE4QPMUA3K5BAFCHMHQ3L2SRZ1B';
 const clientSecret = 'RUO5D0ZODJHNJPROXXMXCYBBY3BL4M3TRA4PFZDVKCXJEV1O';
 const token = `&client_id=${clientId}&client_secret=${clientSecret}&v=${today}`
 let attractionURL = 'https://api.foursquare.com/v2/venues/search?';
+
+// categoryId=categories[i].id
+let categories = [{name:'art_entertainment', id:'4d4b7104d754a06370d81259', checked:false},
+            {name:'event', id:'4d4b7105d754a06373d81259', checked:false},
+            {name:'food', id:'4d4b7105d754a06374d81259', checked:false},
+            {name:'nightlife', id:'4d4b7105d754a06376d81259', checked:false},
+            {name:'recreation', id:'4d4b7105d754a06377d81259', checked:false},
+            {name:'shop_service', id:'4d4b7105d754a06378d81259', checked:false},
+            {name:'travel_transport', id:'4d4b7105d754a06379d81259', checked:false}
+        ];
+
 async function attraction(city) {
     let query = `near=${city.replace(' ', '%20')}&limit=10&sortByPopularity=1`;
     let response = await fetch(`${attractionURL}${query}${token}`);
     let json = await response.json();
     let venues = json.response.venues.map((v) => v.name);
     loadAttractions(venues);
-    return json;
 }
 
 function loadAttractions(arr) {
@@ -141,5 +151,4 @@ function loadAnimation() {
             icons[i].style.animation = '';
         }
     }, 1000)
-    
 }
