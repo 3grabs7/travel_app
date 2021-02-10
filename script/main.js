@@ -111,16 +111,15 @@ const clientId = '5O0MIVGTSWVDRA5LG0A3MZE4QPMUA3K5BAFCHMHQ3L2SRZ1B';
 const clientSecret = 'RUO5D0ZODJHNJPROXXMXCYBBY3BL4M3TRA4PFZDVKCXJEV1O';
 const token = `&client_id=${clientId}&client_secret=${clientSecret}&v=${today}`
 let attractionURL = 'https://api.foursquare.com/v2/venues/search?';
-// Array with APIs category ids and for state of category checkboxes
-// categoryId=categories[i].id
+// Array with APIs category ids and state of category checkboxes
 let categories = [
-    {name:'art_entertainment', id:'4d4b7104d754a06370d81259', checked:false},
-    {name:'event', id:'4d4b7105d754a06373d81259', checked:false},
-    {name:'food', id:'4d4b7105d754a06374d81259', checked:false},
-    {name:'nightlife', id:'4d4b7105d754a06376d81259', checked:false},
-    {name:'recreation', id:'4d4b7105d754a06377d81259', checked:false},
-    {name:'shop_service', id:'4d4b7105d754a06378d81259', checked:false},
-    {name:'travel_transport', id:'4d4b7105d754a06379d81259', checked:false}
+    {name:'art_entertainment', id:'4d4b7104d754a06370d81259', checked:false, icon:''},
+    {name:'event', id:'4d4b7105d754a06373d81259', checked:false, icon:''},
+    {name:'food', id:'4d4b7105d754a06374d81259', checked:false, icon:''},
+    {name:'nightlife', id:'4d4b7105d754a06376d81259', checked:false, icon:''},
+    {name:'recreation', id:'4d4b7105d754a06377d81259', checked:false, icon:''},
+    {name:'shop_service', id:'4d4b7105d754a06378d81259', checked:false, icon:''},
+    {name:'travel_transport', id:'4d4b7105d754a06379d81259', checked:false, icon:''}
         ];
 // Event listeners for checkboxes to update array with status
 let catboxes = document.querySelectorAll('.search__categories');
@@ -129,22 +128,38 @@ for(let i = 0; i < catboxes[0].children.length; i++) {
         let checkbox = e.currentTarget;
         for(let i = 0; i < categories.length; i++) {
             if(categories[i].name === checkbox.name) {
-                categories[i].checked = true;
-            } else { categories[i].checked = false; }
+                if (categories[i].checked === true) {
+                    categories[i].checked = false;
+                } else { categories[i].checked = true;}
+            }
         }
     })
 }
 // API call to get venues
-async function attraction(city) {
+async function attraction(city, load) {
+    // Update query with search term
     let query = `near=${city.replace(' ', '%20')}&limit=10&sortByPopularity=1`;
-    let response = await fetch(`${attractionURL}${query}${token}`);
-    let json = await response.json();
-    let venues = {
-        name:json.response.venues.map(v=>v.name),
-        category:json.response.venues.map(v=> v.categories[0]).map(i=>i.id),
-        adress:json.response.venues.map(v=> v.location.address)
+    // Update search for each category true - 
+    // 10 results per category ?
+    for(let i = 0; i < categories.length; i++) {
+        if(categories[i].checked === true) {
+        let category = `${categories[i].id}` 
+        // Send request
+        let response = await fetch(`${attractionURL}${query}${token}`);
+        // Await response and convert to json
+        let json = await response.json();
+        // Create object with name, category and adress
+        let venues = {
+            name:json.response.venues.map(v=>v.name),
+            category:categories[i],
+            // json.response.venues.map(v=> v.categories[0]).map(i=>i.id)
+            adress:json.response.venues.map(v=> v.location.address),
+            icon:categories[i].icon
+        }
+        // Update results based on the object we got
+        loadAttractions(venues);
+        }
     }
-    loadAttractions(venues);
 }
 // Update results with attractions from API response
 function loadAttractions(arr) {
