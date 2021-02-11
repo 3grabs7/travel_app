@@ -121,7 +121,8 @@ let categories = [
     {name:'shop_service', id:'4d4b7105d754a06378d81259', checked:false, icon:''},
     {name:'travel_transport', id:'4d4b7105d754a06379d81259', checked:false, icon:''}
         ];
-// Event listeners for checkboxes to update array with status
+// Event listeners for checkboxes to update array with status 
+// Change background style when checked
 let catboxes = document.querySelectorAll('.search__categories');
 for(let i = 0; i < catboxes[0].children.length; i++) {
     catboxes[0].children[i].addEventListener('change', (e) => {
@@ -129,8 +130,14 @@ for(let i = 0; i < catboxes[0].children.length; i++) {
         for(let i = 0; i < categories.length; i++) {
             if(categories[i].name === checkbox.name) {
                 if (categories[i].checked === true) {
-                    categories[i].checked = false;
-                } else { categories[i].checked = true;}
+                    categories[i].checked = false; 
+                    checkbox.nextElementSibling.style.backgroundColor = '';            
+                console.log(checkbox.checked);
+                } else { 
+                    categories[i].checked = true;
+                    checkbox.nextElementSibling.style.backgroundColor = 'rgb(92, 145, 243)';
+                console.log(checkbox.checked);
+                }
             }
         }
     })
@@ -152,7 +159,7 @@ async function attraction(city, load) {
         let venues = {
             name:json.response.venues.map(v=>v.name),
             category:categories[i],
-            // json.response.venues.map(v=> v.categories[0]).map(i=>i.id)
+            //id:json.response.venues.map(v=> v.categories[0]).map(i=>i.id),
             adress:json.response.venues.map(v=> v.location.address),
             icon:categories[i].icon
         }
