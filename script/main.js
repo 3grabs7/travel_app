@@ -5,6 +5,7 @@ document.getElementById('searchterm').addEventListener('change', (e) => {
         document.querySelector('#placeholder').innerHTML = "";
     } else { document.querySelector('#placeholder').innerHTML = 'Enter your destination' }
 })
+
 // Get ll and convert to name with location button
 document.querySelector('.search__term i').addEventListener('click', () => {
     navigator.geolocation.getCurrentPosition(async (pos) => {
@@ -34,6 +35,7 @@ checkboxes.forEach(function(box) {
         checkboxes.forEach(b=> optionsValues.push([b.name ,b.checked]));
     }) 
 })
+
 // Initate search, call methods for API calls
 document.getElementById('searchbutton').addEventListener('click', async () => {
     let input = document.getElementById('searchterm').value;
@@ -64,6 +66,7 @@ document.getElementById('searchbutton').addEventListener('click', async () => {
 document.getElementById('searchterm').addEventListener('keydown', (e) => {
     if(e.keyCode === 13) { document.getElementById('searchbutton').click(); }
 })
+
 // Weather API
 const apikey = "8b4c15d2d0638b590c32e373ba197bbb"
 async function apiCallName(city) {
@@ -101,6 +104,7 @@ function updateWeather(obj) {
         weatherForm.forEach((o,i) => { o.innerHTML = weather[i]; })
     }, 750)
 }
+
 // Set todays date for API
 let date = new Date();
 let dd = String(date.getDate()).padStart(2, '0');
@@ -184,6 +188,7 @@ async function attraction(city, load) {
             }
         }
     }
+    //loadAnimationAttraction();
 }
 // Clear attractions
 function clearAttractions() {
@@ -192,9 +197,11 @@ function clearAttractions() {
 // Update results with attractions from API response
 function loadAttractions(obj) {
     let src = document.querySelector('.results__attractions__boxes');
-    // If sorted checkbox true then sort
-        // let sort = document.querySelector('input[name=sort]');
-        // if(sort.checked === true) { obj.sort(); }
+    // If sorted checked -> sort venues
+    let sort = document.querySelector('input[name=sort]');
+    if(sort.checked === true) { 
+        console.log('sort'); 
+    }
     // Add attraction to search result
     for(let i = 0; i < obj.name.length; i++) {
         let box = document.createElement('div');
@@ -215,6 +222,7 @@ function loadAttractions(obj) {
         src.appendChild(box);
     }
 }
+
 // Animation that occurs when weather is updated
 function loadAnimation() {
     document.getElementsByTagName('hr')[1].style.animation = 'ripple 1s linear 1';
@@ -231,3 +239,36 @@ function loadAnimation() {
         }
     }, 1000)
 }
+
+
+let i = 0;
+window.addEventListener('scroll', () => {
+    var scrollpos = window.scrollY; 
+    var wh = window.innerHeight-50; 
+    let boxes = document.querySelectorAll('.results__attractions__boxes__box') ?? undefined;
+    if(boxes != undefined) {
+        Array.from(boxes).forEach((b)=>{
+            if(scrollpos > (b.offsetTop - wh) + 10){
+                if(i < 3) {
+                    b.style.animation = `enterattraction 0.8s ${i / 10}s linear 1 forwards`;
+                    i++;
+                }
+            } else { i = 0; }
+        })
+    }
+})
+
+
+
+
+
+// function loadAnimationAttraction() {
+//  let boxes = document.querySelectorAll('.results__attractions__boxes__box');
+//  Array.from(boxes).forEach((b,i)=>{
+
+
+//     setTimeout(() => {
+//         b.style.animation = 'enterattraction 1s linear 1 forwards';
+//     }, 200*i);
+//  })
+// }

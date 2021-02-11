@@ -273,6 +273,7 @@ body {
                 flex: 1 0 33%;
                 border-radius: 8px;
                 border: 1px solid $primary-color-dark;
+                transform: scale(0);
                 img { 
                     margin: 0 auto;
                     height:50px;
