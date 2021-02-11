@@ -132,11 +132,9 @@ for(let i = 0; i < catboxes[0].children.length; i++) {
                 if (categories[i].checked === true) {
                     categories[i].checked = false; 
                     checkbox.nextElementSibling.style.backgroundColor = '';            
-                console.log(checkbox.checked);
                 } else { 
                     categories[i].checked = true;
                     checkbox.nextElementSibling.style.backgroundColor = 'rgb(92, 145, 243)';
-                console.log(checkbox.checked);
                 }
             }
         }
@@ -144,13 +142,12 @@ for(let i = 0; i < catboxes[0].children.length; i++) {
 }
 // API call to get venues
 async function attraction(city, load) {
-    // Update query with search term
-    let query = `near=${city.replace(' ', '%20')}&limit=10&sortByPopularity=1`;
     // Update search for each category true - 
     // 10 results per category ?
-    for(let i = 0; i < categories.length; i++) {
-        if(categories[i].checked === true) {
-        let category = `${categories[i].id}` 
+    // If all categories are unchecked, search in every category
+    if(categories.filter(c=>c.checked === false).length === categories.length) {
+        // Update query with search term
+        let query = `near=${city.replace(' ', '%20')}&limit=10&sortByPopularity=1`;
         // Send request
         let response = await fetch(`${attractionURL}${query}${token}`);
         // Await response and convert to json
@@ -158,31 +155,58 @@ async function attraction(city, load) {
         // Create object with name, category and adress
         let venues = {
             name:json.response.venues.map(v=>v.name),
-            category:categories[i],
-            //id:json.response.venues.map(v=> v.categories[0]).map(i=>i.id),
-            adress:json.response.venues.map(v=> v.location.address),
-            icon:categories[i].icon
+            category:json.response.venues.map(v=> v.categories[0]).map(i=>i.id),
+            address:json.response.venues.map(v=> v.location.address),
+            icon:json.response.venues.map(v=> v.categories[0]).map(i=>i.id),
         }
         // Update results based on the object we got
         loadAttractions(venues);
+        // Else make one API call per category, 3 results per category
+    } else {
+        for(let i = 0; i < categories.length; i++) {
+            if(categories[i].checked === true) {
+            // Update query with search term
+            let query = `near=${city.replace(' ', '%20')}&limit=10&sortByPopularity=1`;
+            // Add query for category
+            let category = `&categoryId=${categories[i].id}` 
+            // Send request
+            let response = await fetch(`${attractionURL}${query}${category}${token}`);
+            // Await response and convert to json
+            let json = await response.json();
+            // Create object with name, category and adress
+            let venues = {
+                name:json.response.venues.map(v=>v.name),
+                category:categories[i],
+                address:json.response.venues.map(v=> v.location.address),
+                icon:categories[i].icon
+            }
+            // Update results based on the object we got
+            loadAttractions(venues);
+            }
         }
     }
 }
 // Update results with attractions from API response
-function loadAttractions(arr) {
+function loadAttractions(obj) {
     let src = document.querySelector('.results__attractions__boxes');
     // Reset attraction results
     Array.from(src.childNodes).forEach(e => e.remove());
     // If sorted checkbox true then sort
-    let sort = document.querySelector('input[name=sort]');
-    if(sort.checked === true) { arr.sort(); }
+        // let sort = document.querySelector('input[name=sort]');
+        // if(sort.checked === true) { obj.sort(); }
     // Add attraction to search result
-    for(let i = 0; i < arr.length; i++) {
+    for(let i = 0; i < obj.name.length; i++) {
         let box = document.createElement('div');
         box.className = 'results__attractions__boxes__box';
         let head = document.createElement('h1');
-        head.innerHTML = arr[i];
+        head.innerHTML = obj.name[i];
+        let category = document.createElement('p');
+        category.innerHTML = obj.category[3];
+        let address = document.createElement('p');
+        address.innerHTML = obj.address[i];
         box.appendChild(head);
+        box.appendChild(category);
+        box.appendChild(address);
         src.appendChild(box);
     }
 }
