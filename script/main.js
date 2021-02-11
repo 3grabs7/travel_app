@@ -146,7 +146,7 @@ async function attraction(city, load) {
     // Update search for each category true, if all categories are unchecked, search in every category
     if(categories.filter(c=>c.checked === true).length === 0) {
         // Update query with search term
-        let query = `near=${city.replace(' ', '%20')}&limit=10&sortByPopularity=1`;
+        let query = `near=${city.replace(' ', '%20')}&limit=17&sortByPopularity=1`;
         // Send request
         let response = await fetch(`${attractionURL}${query}${token}`);
         // Await response and convert to json
@@ -154,9 +154,9 @@ async function attraction(city, load) {
         // Create object with name, category and adress
         let venues = {
             name:json.response.venues.map(v=>v.name),
-            category:json.response.venues.map(v=> v.categories[0]).map(i=>i.name),
+            category:json.response.venues.map(v=> v.categories[0]).map(i=> i?.name ?? 'Unknown'),
             address:json.response.venues.map(v=> v.location.address),
-            icon:json.response.venues.map(v=> v.categories[0]).map(i=>i.icon)
+            icon:json.response.venues.map(v=> v.categories[0]).map(i=> i?.icon ?? 'Unknown')
         }
         // Update results based on the object we got
         loadAttractions(venues);
@@ -200,15 +200,14 @@ function loadAttractions(obj) {
         let box = document.createElement('div');
         box.className = 'results__attractions__boxes__box';
         let head = document.createElement('h1');
-        head.innerHTML = obj.name[i];
+        head.innerHTML = obj.name[i]?? 'No name found';
         let category = document.createElement('p');
         category.innerHTML = obj.category[i];
         let address = document.createElement('p');
-        address.innerHTML = obj.address[i] != undefined ? obj.address[i] : 'No adress found';
+        address.innerHTML = obj.address[i]?? 'No adress found';
         // Sizes 32, 44, 64, 88
         let icon = document.createElement('img');
         icon.src = `${obj.icon[i].prefix}88${obj.icon[i].suffix}`;
-
         box.appendChild(head);
         box.appendChild(icon);
         box.appendChild(category);
@@ -218,14 +217,14 @@ function loadAttractions(obj) {
 }
 // Animation that occurs when weather is updated
 function loadAnimation() {
-    document.getElementsByTagName('hr')[0].style.animation = 'ripple 1s linear 1';
+    document.getElementsByTagName('hr')[1].style.animation = 'ripple 1s linear 1';
     document.querySelector('.results__weather__top h1').style.animation = 'rotateLetters 1s linear 1';
     let icons = document.querySelectorAll('.results__weather__details__item');
     for(let i = 0; i < icons.length; i++) {
         icons[i].style.animation = 'rotateIcons 1s linear 1';
     }
     setTimeout(() => {
-        document.getElementsByTagName('hr')[0].style.animation = '';
+        document.getElementsByTagName('hr')[1].style.animation = '';
         document.querySelector('.results__weather__top h1').style.animation = '';
         for(let i = 0; i < icons.length; i++) {
             icons[i].style.animation = '';
