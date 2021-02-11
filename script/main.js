@@ -40,6 +40,7 @@ document.getElementById('searchbutton').addEventListener('click', async () => {
     if(input === '') { alert('Please enter a destination'); } 
     else {
         let returnObj = await apiCallName(input);
+        clearAttractions();
         attraction(input);
         updateWeather(returnObj);
     }
@@ -142,10 +143,8 @@ for(let i = 0; i < catboxes[0].children.length; i++) {
 }
 // API call to get venues
 async function attraction(city, load) {
-    // Update search for each category true - 
-    // 10 results per category ?
-    // If all categories are unchecked, search in every category
-    if(categories.filter(c=>c.checked === false).length === categories.length) {
+    // Update search for each category true, if all categories are unchecked, search in every category
+    if(categories.filter(c=>c.checked === true).length === 0) {
         // Update query with search term
         let query = `near=${city.replace(' ', '%20')}&limit=10&sortByPopularity=1`;
         // Send request
@@ -155,9 +154,9 @@ async function attraction(city, load) {
         // Create object with name, category and adress
         let venues = {
             name:json.response.venues.map(v=>v.name),
-            category:json.response.venues.map(v=> v.categories[0]).map(i=>i.id),
+            category:json.response.venues.map(v=> v.categories[0]).map(i=>i.name),
             address:json.response.venues.map(v=> v.location.address),
-            icon:json.response.venues.map(v=> v.categories[0]).map(i=>i.id),
+            icon:json.response.venues.map(v=> v.categories[0]).map(i=>i.icon)
         }
         // Update results based on the object we got
         loadAttractions(venues);
@@ -165,32 +164,34 @@ async function attraction(city, load) {
     } else {
         for(let i = 0; i < categories.length; i++) {
             if(categories[i].checked === true) {
-            // Update query with search term
-            let query = `near=${city.replace(' ', '%20')}&limit=10&sortByPopularity=1`;
-            // Add query for category
-            let category = `&categoryId=${categories[i].id}` 
-            // Send request
-            let response = await fetch(`${attractionURL}${query}${category}${token}`);
-            // Await response and convert to json
-            let json = await response.json();
-            // Create object with name, category and adress
-            let venues = {
-                name:json.response.venues.map(v=>v.name),
-                category:categories[i],
-                address:json.response.venues.map(v=> v.location.address),
-                icon:categories[i].icon
-            }
-            // Update results based on the object we got
-            loadAttractions(venues);
+                // Update query with search term
+                let query = `near=${city.replace(' ', '%20')}&limit=6&sortByPopularity=1`;
+                // Add query for category
+                let category = `&categoryId=${categories[i].id}` 
+                // Send request
+                let response = await fetch(`${attractionURL}${query}${category}${token}`);
+                // Await response and convert to json
+                let json = await response.json();
+                // Create object with name, category and adress
+                let venues = {
+                    name:json.response.venues.map(v=>v.name),
+                    category:json.response.venues.map(v=> v.categories[0]).map(i=>i.name),
+                    address:json.response.venues.map(v=> v.location.address),
+                    icon:json.response.venues.map(v=> v.categories[0]).map(i=>i.icon)
+                }
+                // Update results based on the object we got
+                loadAttractions(venues);
             }
         }
     }
 }
+// Clear attractions
+function clearAttractions() {
+    Array.from(document.querySelector('.results__attractions__boxes').childNodes).forEach(e => e.remove());
+}
 // Update results with attractions from API response
 function loadAttractions(obj) {
     let src = document.querySelector('.results__attractions__boxes');
-    // Reset attraction results
-    Array.from(src.childNodes).forEach(e => e.remove());
     // If sorted checkbox true then sort
         // let sort = document.querySelector('input[name=sort]');
         // if(sort.checked === true) { obj.sort(); }
@@ -201,10 +202,15 @@ function loadAttractions(obj) {
         let head = document.createElement('h1');
         head.innerHTML = obj.name[i];
         let category = document.createElement('p');
-        category.innerHTML = obj.category[3];
+        category.innerHTML = obj.category[i];
         let address = document.createElement('p');
-        address.innerHTML = obj.address[i];
+        address.innerHTML = obj.address[i] != undefined ? obj.address[i] : 'No adress found';
+        // Sizes 32, 44, 64, 88
+        let icon = document.createElement('img');
+        icon.src = `${obj.icon[i].prefix}88${obj.icon[i].suffix}`;
+
         box.appendChild(head);
+        box.appendChild(icon);
         box.appendChild(category);
         box.appendChild(address);
         src.appendChild(box);
