@@ -593,6 +593,7 @@ body {
 }
 .results__attractions {
   width: 100%;
+  display: block;
 }
 .results__attractions__head {
   width: 100%;
