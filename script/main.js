@@ -258,6 +258,9 @@ function loadAttractions(obj) {
         let box = document.createElement('div');
         box.className = 'results__attractions__boxes__box';
         let head = document.createElement('h1');
+        if(obj.name[i].length > 30) {
+            obj.name[i] = `${obj.name[i].slice(0, 30)}...`;
+        }
         head.innerHTML = obj.name[i]?? 'No name found';
         let category = document.createElement('p');
         category.innerHTML = obj.category[i];

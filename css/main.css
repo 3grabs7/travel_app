@@ -294,7 +294,7 @@
   margin: 0;
   padding: 0;
   width: 100%;
-  font-family: consolas;
+  font-family: Verdana;
 }
 
 body {
@@ -644,7 +644,7 @@ body {
   width: 50px;
 }
 .results__attractions__boxes__box h1 {
-  font-size: 36px;
+  font-size: 3.1vh;
 }
 .results__attractions__boxes__box p {
   width: 70%;
