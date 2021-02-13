@@ -32,7 +32,6 @@ checkboxes.forEach(function(box) {
         } 
         optionsValues = [];
         checkboxes.forEach(b=> optionsValues.push([b.name ,b.checked]));
-        console.log(optionsValues);
     }) 
 })
 
@@ -153,7 +152,7 @@ let categories = [
     {name:'travel_transport', id:'4d4b7105d754a06379d81259', checked:false}
         ];
 // Event listeners for checkboxes to update array with status 
-// Change background style when checked
+// Change background style and hover color when checked
 let catboxes = document.querySelectorAll('.search__categories');
 for(let i = 0; i < catboxes[0].children.length; i++) {
     catboxes[0].children[i].addEventListener('change', (e) => {
@@ -162,10 +161,22 @@ for(let i = 0; i < catboxes[0].children.length; i++) {
             if(categories[i].name === checkbox.name) {
                 if (categories[i].checked === true) {
                     categories[i].checked = false; 
-                    checkbox.nextElementSibling.style.backgroundColor = '';            
+                    checkbox.nextElementSibling.style = 'background-color:none;color:rgb(151, 117, 252)';
+                    checkbox.nextElementSibling.addEventListener('mouseover', (e) => {
+                        e.currentTarget.style.color = 'rgb(151, 117, 252)';
+                    })
+                    checkbox.nextElementSibling.addEventListener('mouseout', (e) => {
+                        e.currentTarget.style.color = 'white';
+                    })  
                 } else { 
                     categories[i].checked = true;
-                    checkbox.nextElementSibling.style.backgroundColor = 'rgb(92, 145, 243)';
+                    checkbox.nextElementSibling.style = 'background-color:rgb(92, 145, 243);color:black';
+                    checkbox.nextElementSibling.addEventListener('mouseover', (e) => {
+                        e.currentTarget.style.color = 'black';
+                    })
+                    checkbox.nextElementSibling.addEventListener('mouseout', (e) => {
+                        e.currentTarget.style.color = 'white';
+                    })
                 }
             }
         }
@@ -173,7 +184,7 @@ for(let i = 0; i < catboxes[0].children.length; i++) {
 }
 // API call to get venues
 async function attraction(city) {
-    // Update search for each category true, if all categories are unchecked, search in every category
+    // Repeat search for each category == true, if all categories are unchecked, search in every category
     if(categories.filter(c=>c.checked === true).length === 0) {
         // Update query with search term
         let query = `near=${city.replace(' ', '%20')}&limit=29&sortByPopularity=1`;
@@ -181,16 +192,16 @@ async function attraction(city) {
         let response = await fetch(`${attractionURL}${query}${token}`);
         // Await response and convert to json
         let json = await response.json();
-        // Create object with name, category and adress
+        // Create object with name, category and adress from response
         let venues = {
             name:json.response.venues.map(v=>v.name),
             category:json.response.venues.map(v=> v.categories[0]).map(i=> i?.name ?? 'Unknown'),
             address:json.response.venues.map(v=> v.location.address),
             icon:json.response.venues.map(v=> v.categories[0]).map(i=> i?.icon ?? 'Unknown')
         }
-        // Update results based on the object we got
+        // Update results based on the object we created from response
         loadAttractions(venues);
-        // Else make one API call per category, 3 results per category
+        // Else -> make one API call per category checked, 6 results per call
     } else {
         for(let i = 0; i < categories.length; i++) {
             if(categories[i].checked === true) {
@@ -203,6 +214,7 @@ async function attraction(city) {
                 // Await response and convert to json
                 let json = await response.json();
                 // Create object with name, category and adress
+                // We don't need to care about catching map error here 'cause we only search through categories supplied by API
                 let venues = {
                     name:json.response.venues.map(v=>v.name),
                     category:json.response.venues.map(v=> v.categories[0]).map(i=>i.name),
@@ -223,8 +235,23 @@ function clearAttractions() {
 function loadAttractions(obj) {
     let src = document.querySelector('.results__attractions__boxes');
     // If sorted checked -> sort venues
+    // ENVISHETEN VANN!!!! JAG GJORDE DET!!!!!!!!! SKRYYYYYYYYYYYT!!!!!!
     if(optionsValues[2][1] === true) { 
-        console.log('sort'); 
+        let length = obj.name.length;
+        let min = 0;
+        for(let i = 0; i < length; i++) {
+            min = i;
+            for(let j = i+1; j < length; j++) {
+                if(obj.name[j] < obj.name[min]) {
+                    min = j;
+                }
+            }
+            for(const arr in obj) {
+                let temp = obj[arr][i];
+                obj[arr][i] = obj[arr][min];
+                obj[arr][min] = temp
+            }
+        }
     }
     // Add attraction to search result
     for(let i = 0; i < obj.name.length; i++) {

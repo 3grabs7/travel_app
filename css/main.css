@@ -396,7 +396,7 @@ body {
 .search__term label {
   width: 92.5%;
   position: absolute;
-  bottom: 33px;
+  bottom: 38px;
   left: 5px;
   pointer-events: none;
 }
@@ -415,8 +415,8 @@ body {
   border: 2px solid #9775fc;
   border-radius: 10px;
   color: black;
-  left: -3px;
-  bottom: -8px;
+  left: -1.8px;
+  bottom: -13px;
   opacity: 0;
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
@@ -466,6 +466,7 @@ body {
 }
 .search__checkbox label:hover {
   cursor: pointer;
+  color: #9775fc;
 }
 .search__categories {
   display: -webkit-box;
