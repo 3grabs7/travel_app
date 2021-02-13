@@ -240,35 +240,25 @@ function loadAnimation() {
     }, 1000)
 }
 
-
+// Transition for attraction elements when scrolled and elements are in window view
 let i = 0;
 window.addEventListener('scroll', () => {
+    
     var scrollpos = window.scrollY; 
     var wh = window.innerHeight-50; 
     let boxes = document.querySelectorAll('.results__attractions__boxes__box') ?? undefined;
     if(boxes != undefined) {
         Array.from(boxes).forEach((b)=>{
-            if(scrollpos > (b.offsetTop - wh) + 10){
+            if(scrollpos > (b.offsetTop - wh) - 20){
                 if(i < 3) {
-                    b.style.animation = `enterattraction 0.8s ${i / 10}s linear 1 forwards`;
-                    i++;
-                }
-            } else { i = 0; }
+                    if(b.style.animation === '') {
+                        // Delay for each 3 elements in one row, transition left to right
+                        b.style.animation = `enterattraction 0.7s ${i / 10 }s linear 1 forwards`;
+                        i++;
+                    }
+                } else { i = 0; }
+            } 
         })
     }
 })
 
-
-
-
-
-// function loadAnimationAttraction() {
-//  let boxes = document.querySelectorAll('.results__attractions__boxes__box');
-//  Array.from(boxes).forEach((b,i)=>{
-
-
-//     setTimeout(() => {
-//         b.style.animation = 'enterattraction 1s linear 1 forwards';
-//     }, 200*i);
-//  })
-// }
