@@ -187,7 +187,7 @@ async function attraction(city) {
     // Repeat search for each category == true, if all categories are unchecked, search in every category
     if(categories.filter(c=>c.checked === true).length === 0) {
         // Update query with search term
-        let query = `near=${city.replace(' ', '%20')}&limit=116&sortByPopularity=1`;
+        let query = `near=${city.replace(' ', '%20')}&limit=115&sortByPopularity=1`;
         // Send request
         let response = await fetch(`${attractionURL}${query}${token}`);
         // Await response and convert to json
@@ -300,22 +300,15 @@ function loadAnimation() {
     }, 1000)
 }
 
-// Transition for attraction elements when scrolled and elements are in window view
-let i = 0;
+// Transition for attraction elements when scrolled and elements are in window view, transition left to right
 window.addEventListener('scroll', () => {
     var scrollpos = window.scrollY; 
     var wh = window.innerHeight-50; 
     let boxes = document.querySelectorAll('.results__attractions__boxes__box') ?? undefined;
     if(boxes != undefined) {
-        Array.from(boxes).forEach((b)=>{
-            if(scrollpos > (b.offsetTop - wh) - 20){
-                if(i < 3) {
-                    if(b.style.animation === '') {
-                        // Delay for each 3 elements in one row, transition left to right
-                        b.style.animation = `enterattraction 0.7s ${i / 10 }s linear 1 forwards`;
-                        i++;
-                    }
-                } else { i = 0; }
+        Array.from(boxes).forEach((b, i)=>{
+            if((scrollpos > (b.offsetTop - wh) - 20) && (b.style.animation === '')){
+                    b.style.animation = `enterattraction 0.7s ${(i % 3) / 10 }s linear 1 forwards`;
             } 
         })
     }
