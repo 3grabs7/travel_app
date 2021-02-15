@@ -187,7 +187,7 @@ async function attraction(city) {
     // Repeat search for each category == true, if all categories are unchecked, search in every category
     if(categories.filter(c=>c.checked === true).length === 0) {
         // Update query with search term
-        let query = `near=${city.replace(' ', '%20')}&limit=29&sortByPopularity=1`;
+        let query = `near=${city.replace(' ', '%20')}&limit=116&sortByPopularity=1`;
         // Send request
         let response = await fetch(`${attractionURL}${query}${token}`);
         // Await response and convert to json
@@ -206,7 +206,7 @@ async function attraction(city) {
         for(let i = 0; i < categories.length; i++) {
             if(categories[i].checked === true) {
                 // Update query with search term
-                let query = `near=${city.replace(' ', '%20')}&limit=6&sortByPopularity=1`;
+                let query = `near=${city.replace(' ', '%20')}&limit=62&sortByPopularity=1`;
                 // Add query for category
                 let category = `&categoryId=${categories[i].id}` 
                 // Send request
@@ -303,7 +303,6 @@ function loadAnimation() {
 // Transition for attraction elements when scrolled and elements are in window view
 let i = 0;
 window.addEventListener('scroll', () => {
-    
     var scrollpos = window.scrollY; 
     var wh = window.innerHeight-50; 
     let boxes = document.querySelectorAll('.results__attractions__boxes__box') ?? undefined;
